@@ -112,8 +112,17 @@ jobs:
         EOF
 
 
-    - name: Export .ipa from Archive
+
+    - name: Export .ipa
       run: |
+        xcodebuild -project build/ios/test.xcodeproj \
+          -scheme test \
+          -configuration Release \
+          -sdk iphoneos \
+          -destination generic/platform=iOS \
+          -archivePath build/ios/test.xcarchive \
+          archive
+
         xcodebuild -exportArchive \
           -archivePath build/ios/test.xcarchive \
           -exportOptionsPlist ExportOptions.plist \
