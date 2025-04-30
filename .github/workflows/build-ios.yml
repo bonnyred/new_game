@@ -18,14 +18,15 @@ jobs:
       run: |
         mkdir -p ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable
         curl -L https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz -o templates.tpz
-        tar -xf templates.tpz
+        mkdir templates
+        tar -xf templates.tpz -C templates
         rm templates.tpz
 
         echo "Checking contents of extracted templates:"
         ls -R templates
 
         echo "Moving iOS export template to expected location..."
-        cp templates/ios.zip ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
+        cp templates/templates/ios.zip ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
 
         echo "Listing contents of ios.zip:"
         unzip -l ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
