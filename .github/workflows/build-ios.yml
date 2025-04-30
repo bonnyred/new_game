@@ -16,20 +16,19 @@ jobs:
 
     - name: Install Godot Export Templates
       run: |
-        TEMPLATES_DIR="$HOME/Library/Application Support/Godot/export_templates/4.2.2.stable"
-        mkdir -p "$TEMPLATES_DIR"
-        
+        mkdir -p ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable
         curl -L https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz -o templates.tpz
-        tar -xvf templates.tpz -C "$HOME/Library/Application Support/Godot/export_templates"
+        tar -xf templates.tpz
         rm templates.tpz
-    
-        # Unzip ios.zip, but leave the zip in place for Godot to detect
-        IOS_ZIP="$TEMPLATES_DIR/ios.zip"
-        if [ -f "$IOS_ZIP" ]; then
-          mkdir -p "$TEMPLATES_DIR/ios"
-          unzip -o "$IOS_ZIP" -d "$TEMPLATES_DIR/ios"
-        fi
 
+        echo "Checking contents of extracted templates:"
+        ls -R templates
+
+        echo "Moving iOS export template to expected location..."
+        cp templates/ios.zip ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
+
+        echo "Listing contents of ios.zip:"
+        unzip -l ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
 
     - name: Install Godot Engine CLI
       run: |
