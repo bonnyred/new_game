@@ -69,6 +69,11 @@ jobs:
       run: |
         security find-identity -v -p codesigning
 
+    - name: Inspect Provisioning Profile
+      run: |
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/${{ secrets.IOS_PROVISIONING_UUID }}.mobileprovision > profile.plist
+        plutil -p profile.plist
+
 
     - name: Export iOS Project
       run: |
