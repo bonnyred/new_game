@@ -113,20 +113,20 @@ jobs:
 
 
 
-    - name: Export .ipa
+    - name: Archive iOS App
       run: |
+        mkdir -p build/ios
         xcodebuild -project build/ios/test.xcodeproj \
           -scheme test \
           -configuration Release \
           -sdk iphoneos \
           -destination generic/platform=iOS \
           -archivePath build/ios/test.xcarchive \
+          CODE_SIGN_IDENTITY="Apple Distribution" \
+          PROVISIONING_PROFILE_SPECIFIER="Prof 2" \
+          DEVELOPMENT_TEAM="LDT3X4537N" \
           archive
 
-        xcodebuild -exportArchive \
-          -archivePath build/ios/test.xcarchive \
-          -exportOptionsPlist ExportOptions.plist \
-          -exportPath build/ios/exported
     
 
     - name: Upload IPA Artifact
