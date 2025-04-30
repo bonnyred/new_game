@@ -63,7 +63,7 @@ jobs:
 
     - name: Patch export_presets.cfg with provisioning UUID
       run: |
-        sed -i '' "s|application/provisioning_profile_specifier_release=.*|application/provisioning_profile_specifier_release=${{ secrets.IOS_PROVISIONING_UUID }}|" export_presets.cfg
+        sed -i '' "s|application/provisioning_profile_specifier_release=.*|application/provisioning_profile_specifier_release=\"${{ secrets.IOS_PROVISIONING_UUID }}\"|" export_presets.cfg
 
 
     - name: Export iOS Project
