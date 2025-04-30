@@ -27,10 +27,14 @@ jobs:
         unzip godot.zip -d ~/godot
         chmod +x ~/godot/Godot.app/Contents/MacOS/Godot
 
+    - name: Import Godot Resources
+      run: |
+        ~/godot/Godot.app/Contents/MacOS/Godot --headless --editor --quit
+
     - name: Export iOS Project
       run: |
         mkdir -p build/ios
-        ~/godot/Godot.app/Contents/MacOS/Godot --headless --export-release "iOS" build/ios/test.xcodeproj
+        ~/godot/Godot.app/Contents/MacOS/Godot --headless --export-release "iOS (copy)" build/ios/test.xcodeproj
 
     - name: Build Xcode Project to IPA
       run: |
