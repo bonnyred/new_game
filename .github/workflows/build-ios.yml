@@ -17,13 +17,13 @@ jobs:
     - name: Install Godot Export Templates
       run: |
         mkdir -p ~/.local/share/godot/templates
-        curl -L https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_export_templates.tpz -o templates.tpz
+        curl -L https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz -o templates.tpz
         tar -xvf templates.tpz -C ~/.local/share/godot/templates
         rm templates.tpz
 
     - name: Install Godot Engine CLI
       run: |
-        curl -L https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_macos.universal.zip -o godot.zip
+        curl -L https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_macos.universal.zip -o godot.zip
         unzip godot.zip -d ~/godot
         chmod +x ~/godot/Godot.app/Contents/MacOS/Godot
 
