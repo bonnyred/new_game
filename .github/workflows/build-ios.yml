@@ -86,16 +86,21 @@ jobs:
         mkdir -p build/ios
         ~/godot/Godot.app/Contents/MacOS/Godot --headless --verbose --export-release "iOS (copy)" build/ios/test.xcodeproj
 
-    - name: Build Xcode Project to IPA
+    - name: Build Xcode Project
       run: |
-        xcodebuild -project build/ios/test.xcodeproj \
-                   -scheme "test" \
-                   -configuration Release \
-                   -sdk iphoneos \
-                   -destination generic/platform=iOS \
-                   -allowProvisioningUpdates \
-                   -archivePath build/ios/test.xcarchive \
-                   archive
+        xcodebuild \
+          -project build/ios/test.xcodeproj \
+          -scheme test \
+          -configuration Release \
+          -sdk iphoneos \
+          -destination generic/platform=iOS \
+          -archivePath build/ios/test.xcarchive \
+          -allowProvisioningUpdates \
+          CODE_SIGN_IDENTITY="iPhone Distribution: REHANA BEGUM (LDT3X4537N)" \
+          PROVISIONING_PROFILE_SPECIFIER="Prof 2" \
+          DEVELOPMENT_TEAM="LDT3X4537N" \
+          archive
+
 
         xcodebuild -exportArchive \
                    -archivePath build/ios/test.xcarchive \
