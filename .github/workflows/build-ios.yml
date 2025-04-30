@@ -133,4 +133,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: godot-ios-app
-        path: output/*.ipa
+        path: build/ios/exported
