@@ -41,6 +41,14 @@ jobs:
       run: |
         ~/godot/Godot.app/Contents/MacOS/Godot --headless --editor --quit --verbose || true
 
+    - name: Install Provisioning Profile
+      run: |
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "$IOS_PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+      env:
+        IOS_PROFILE_BASE64: ${{ secrets.IOS_PROFILE_BASE64 }}
+
+    
     - name: Export iOS Project
       run: |
         mkdir -p build/ios
