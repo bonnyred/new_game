@@ -65,10 +65,20 @@ jobs:
       run: |
         security find-identity -v -p codesigning
 
-    - name: Inspect Provisioning Profile
+    - name: Inspect Provisioning Profile Details
       run: |
+        echo "🔍 Decoding Provisioning Profile..."
         security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/${{ secrets.IOS_PROVISIONING_UUID }}.mobileprovision > profile.plist
-        plutil -p profile.plist
+    
+        echo ""
+        echo "📄 Provisioning Profile Details:"
+        plutil -extract Name xml1 -o - profile.plist
+        plutil -extract UUID xml1 -o - profile.plist
+        plutil -extract TeamIdentifier xml1 -o - profile.plist
+        plutil -extract Entitlements xml1 -o - profile.plist
+        plutil -extract AppIDName xml1 -o - profile.plist
+        plutil -extract ApplicationIdentifierPrefix xml1 -o - profile.plist
+
 
 
     - name: Export iOS Project
