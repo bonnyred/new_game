@@ -65,6 +65,10 @@ jobs:
       run: |
         sed -i '' "s|application/provisioning_profile_specifier_release=.*|application/provisioning_profile_specifier_release=\"${{ secrets.IOS_PROVISIONING_UUID }}\"|" export_presets.cfg
 
+    - name: List available code signing identities
+      run: |
+        security find-identity -v -p codesigning
+
 
     - name: Export iOS Project
       run: |
