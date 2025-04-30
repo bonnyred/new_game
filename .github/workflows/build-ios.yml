@@ -126,8 +126,14 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER="Prof 2" \
           DEVELOPMENT_TEAM="LDT3X4537N" \
           archive
-
     
+    - name: Export IPA
+      run: |
+        xcodebuild -exportArchive \
+          -archivePath build/ios/test.xcarchive \
+          -exportOptionsPlist ExportOptions.plist \
+          -exportPath build/ios/exported
+
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
