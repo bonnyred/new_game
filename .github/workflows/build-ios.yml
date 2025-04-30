@@ -61,10 +61,6 @@ jobs:
         IOS_PROFILE_BASE64: ${{ secrets.IOS_PROFILE_BASE64 }}
         IOS_PROVISIONING_UUID: ${{ secrets.IOS_PROVISIONING_UUID }}
 
-    - name: Patch export_presets.cfg with provisioning UUID
-      run: |
-        sed -i '' "s|application/provisioning_profile_specifier_release=.*|application/provisioning_profile_specifier_release=\"${{ secrets.IOS_PROVISIONING_UUID }}\"|" export_presets.cfg
-
     - name: List available code signing identities
       run: |
         security find-identity -v -p codesigning
