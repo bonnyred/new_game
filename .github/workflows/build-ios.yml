@@ -41,14 +41,26 @@ jobs:
       run: |
         ~/godot/Godot.app/Contents/MacOS/Godot --headless --editor --quit --verbose || true
 
+    - name: Install Signing Certificate
+      run: |
+        echo "$IOS_CERT_P12_BASE64" | base64 --decode > certificate.p12
+        security create-keychain -p "" build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p "" build.keychain
+        security import certificate.p12 -k build.keychain -P "$IOS_CERT_PASSWORD" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+      env:
+        IOS_CERT_P12_BASE64: ${{ secrets.IOS_CERT_P12_BASE64 }}
+        IOS_CERT_PASSWORD: ${{ secrets.IOS_CERT_PASSWORD }}
+
     - name: Install Provisioning Profile
       run: |
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        echo "$IOS_PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        echo "$IOS_PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/${IOS_PROVISIONING_UUID}.mobileprovision
       env:
         IOS_PROFILE_BASE64: ${{ secrets.IOS_PROFILE_BASE64 }}
+        IOS_PROVISIONING_UUID: ${{ secrets.IOS_PROVISIONING_UUID }}
 
-    
     - name: Export iOS Project
       run: |
         mkdir -p build/ios
@@ -60,13 +72,18 @@ jobs:
                    -scheme "test" \
                    -configuration Release \
                    -sdk iphoneos \
-                   -derivedDataPath build/ios/DerivedData \
-                   clean build
-        mkdir -p output
-        xcrun -sdk iphoneos PackageApplication -v build/ios/DerivedData/Build/Products/Release-iphoneos/*.app -o $PWD/output/test.ipa
+                   -destination generic/platform=iOS \
+                   -allowProvisioningUpdates \
+                   -archivePath build/ios/test.xcarchive \
+                   archive
+
+        xcodebuild -exportArchive \
+                   -archivePath build/ios/test.xcarchive \
+                   -exportOptionsPlist ExportOptions.plist \
+                   -exportPath output
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
       with:
         name: godot-ios-app
-        path: output/test.ipa
+        path: output/*.ipa
