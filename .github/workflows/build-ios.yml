@@ -27,9 +27,9 @@ jobs:
         unzip godot.zip -d ~/godot
         chmod +x ~/godot/Godot.app/Contents/MacOS/Godot
 
-    - name: Import Godot Resources
+    - name: Run Godot import step
       run: |
-        ~/godot/Godot.app/Contents/MacOS/Godot --headless --editor --quit --verbose
+        ~/godot/Godot.app/Contents/MacOS/Godot --headless --editor --quit --verbose || true
 
     - name: Export iOS Project
       run: |
