@@ -34,7 +34,7 @@ jobs:
     - name: Export iOS Project
       run: |
         mkdir -p build/ios
-        ~/godot/Godot.app/Contents/MacOS/Godot --headless --verbose --export-release "iOS" build/ios/test.xcodeproj
+        ~/godot/Godot.app/Contents/MacOS/Godot --headless --verbose --export-release "iOS (copy)" build/ios/test.xcodeproj
 
     - name: Build Xcode Project to IPA
       run: |
