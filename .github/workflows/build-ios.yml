@@ -1,4 +1,4 @@
-name: Build Godot iOS and Android App
+name: Build Godot iOS App
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-15
+    runs-on: macos-15  # macOS 14 has Xcode 16
     timeout-minutes: 30
 
     steps:
@@ -21,8 +21,15 @@ jobs:
         mkdir templates
         tar -xf templates.tpz -C templates
         rm templates.tpz
+
+        echo "Checking contents of extracted templates:"
+        ls -R templates
+
+        echo "Moving iOS export template to expected location..."
         cp templates/templates/ios.zip ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
-        cp templates/templates/android.zip ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/android.zip
+
+        echo "Listing contents of ios.zip:"
+        unzip -l ~/Library/Application\ Support/Godot/export_templates/4.2.2.stable/ios.zip
 
     - name: Install Godot Engine CLI
       run: |
@@ -54,10 +61,31 @@ jobs:
         IOS_PROFILE_BASE64: ${{ secrets.IOS_PROFILE_BASE64 }}
         IOS_PROVISIONING_UUID: ${{ secrets.IOS_PROVISIONING_UUID }}
 
+    - name: List available code signing identities
+      run: |
+        security find-identity -v -p codesigning
+
+    - name: Inspect Provisioning Profile Details
+      run: |
+        echo "🔍 Decoding Provisioning Profile..."
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/${{ secrets.IOS_PROVISIONING_UUID }}.mobileprovision > profile.plist
+    
+        echo ""
+        echo "📄 Provisioning Profile Details:"
+        plutil -extract Name xml1 -o - profile.plist
+        plutil -extract UUID xml1 -o - profile.plist
+        plutil -extract TeamIdentifier xml1 -o - profile.plist
+        plutil -extract Entitlements xml1 -o - profile.plist
+        plutil -extract AppIDName xml1 -o - profile.plist
+        plutil -extract ApplicationIdentifierPrefix xml1 -o - profile.plist
+
+
+
     - name: Export iOS Project
       run: |
         mkdir -p build/ios
         ~/godot/Godot.app/Contents/MacOS/Godot --headless --verbose --export-release "iOS (copy)" build/ios/test.xcodeproj
+
 
     - name: Create ExportOptions.plist
       run: |
@@ -83,8 +111,11 @@ jobs:
         </plist>
         EOF
 
+
+
     - name: Archive iOS App
       run: |
+        mkdir -p build/ios
         xcodebuild -project build/ios/test.xcodeproj \
           -scheme test \
           -configuration Release \
@@ -95,7 +126,7 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER="Prof 2" \
           DEVELOPMENT_TEAM="LDT3X4537N" \
           archive
-
+    
     - name: Export IPA
       run: |
         xcodebuild -exportArchive \
@@ -103,39 +134,9 @@ jobs:
           -exportOptionsPlist ExportOptions.plist \
           -exportPath build/ios/exported
 
-    - name: Upload iOS Artifact
+
+    - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ios-build
+        name: godot-ios-app
         path: build/ios/exported
-
-  build-android:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: Install Godot Engine CLI
-      run: |
-        curl -L https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_linux.x86_64.zip -o godot.zip
-        unzip godot.zip -d godot
-        chmod +x godot/Godot_v4.2.2-stable_linux.x86_64
-
-    - name: Install Android Export Templates
-      run: |
-        mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
-        curl -L https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz -o templates.tpz
-        mkdir templates && tar -xf templates.tpz -C templates
-        cp templates/templates/android.zip ~/.local/share/godot/export_templates/4.2.2.stable/android.zip
-
-    - name: Export Android APK
-      run: |
-        mkdir -p build/android
-        ./godot/Godot_v4.2.2-stable_linux.x86_64 --headless --export-release "Android" build/android/app.apk
-
-    - name: Upload Android Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-build
-        path: build/android/app.apk
