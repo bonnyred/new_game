@@ -86,24 +86,57 @@ jobs:
         mkdir -p build/ios
         ~/godot/Godot.app/Contents/MacOS/Godot --headless --verbose --export-release "iOS (copy)" build/ios/test.xcodeproj
 
-    - name: Build Xcode Project to IPA
-      run: |
-        xcodebuild -project build/ios/test.xcodeproj \
-                   -scheme "test" \
-                   -configuration Release \
-                   -sdk iphoneos \
-                   -destination generic/platform=iOS \
-                   -allowProvisioningUpdates \
-                   -archivePath build/ios/test.xcarchive \
-                   archive
 
+    - name: Create ExportOptions.plist
+      run: |
+        cat <<EOF > ExportOptions.plist
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>method</key>
+          <string>app-store</string>
+          <key>teamID</key>
+          <string>LDT3X4537N</string>
+          <key>provisioningProfiles</key>
+          <dict>
+            <key>newer.game.test</key>
+            <string>Prof 2</string>
+          </dict>
+          <key>signingStyle</key>
+          <string>manual</string>
+          <key>destination</key>
+          <string>export</string>
+        </dict>
+        </plist>
+        EOF
+
+
+
+    - name: Archive iOS App
+      run: |
+        mkdir -p build/ios
+        xcodebuild -project build/ios/test.xcodeproj \
+          -scheme test \
+          -configuration Release \
+          -sdk iphoneos \
+          -destination generic/platform=iOS \
+          -archivePath build/ios/test.xcarchive \
+          CODE_SIGN_IDENTITY="Apple Distribution" \
+          PROVISIONING_PROFILE_SPECIFIER="Prof 2" \
+          DEVELOPMENT_TEAM="LDT3X4537N" \
+          archive
+    
+    - name: Export IPA
+      run: |
         xcodebuild -exportArchive \
-                   -archivePath build/ios/test.xcarchive \
-                   -exportOptionsPlist ExportOptions.plist \
-                   -exportPath output
+          -archivePath build/ios/test.xcarchive \
+          -exportOptionsPlist ExportOptions.plist \
+          -exportPath build/ios/exported
+
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
       with:
         name: godot-ios-app
-        path: output/*.ipa
+        path: build/ios/exported
