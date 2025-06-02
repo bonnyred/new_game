@@ -1,39 +1,46 @@
-[gd_scene load_steps=10 format=3 uid="uid://d2w2i5h0lhc6l"]
+[gd_scene load_steps=11 format=3 uid="uid://d2w2i5h0lhc6l"]
 
 [ext_resource type="Script" uid="uid://ncdcbq0xrihj" path="res://scripts/slime.gd" id="1_fxbww"]
-[ext_resource type="Texture2D" uid="uid://bl53gpvg5mh1y" path="res://assets/sprites/slime_green.png" id="1_nuk1g"]
 [ext_resource type="PackedScene" uid="uid://dtrbka1ef726o" path="res://scenes/killzone.tscn" id="2_aiwyj"]
+[ext_resource type="Texture2D" uid="uid://bwoec51f6mei0" path="res://assets/sprites/slime_purple.png" id="2_n6pvg"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ayoyu"]
-atlas = ExtResource("1_nuk1g")
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjw23"]
+atlas = ExtResource("2_n6pvg")
 region = Rect2(0, 24, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2ponx"]
-atlas = ExtResource("1_nuk1g")
+[sub_resource type="AtlasTexture" id="AtlasTexture_2npkn"]
+atlas = ExtResource("2_n6pvg")
 region = Rect2(24, 24, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_x57lo"]
-atlas = ExtResource("1_nuk1g")
+[sub_resource type="AtlasTexture" id="AtlasTexture_fd6lc"]
+atlas = ExtResource("2_n6pvg")
 region = Rect2(48, 24, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1a8la"]
-atlas = ExtResource("1_nuk1g")
+[sub_resource type="AtlasTexture" id="AtlasTexture_gstla"]
+atlas = ExtResource("2_n6pvg")
 region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5wyi"]
+atlas = ExtResource("2_n6pvg")
+region = Rect2(24, 48, 24, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a8uf2"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ayoyu")
+"texture": SubResource("AtlasTexture_pjw23")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2ponx")
+"texture": SubResource("AtlasTexture_2npkn")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_x57lo")
+"texture": SubResource("AtlasTexture_fd6lc")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1a8la")
+"texture": SubResource("AtlasTexture_gstla")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5wyi")
 }],
 "loop": true,
 "name": &"default",
@@ -50,8 +57,6 @@ script = ExtResource("1_fxbww")
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_a8uf2")
 autoplay = "default"
-frame = 2
-frame_progress = 0.722655
 
 [node name="Killzone" parent="." instance=ExtResource("2_aiwyj")]
 

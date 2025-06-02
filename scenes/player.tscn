@@ -168,7 +168,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bvcm0"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 5.0
 
 [node name="Player" type="CharacterBody2D"]
@@ -184,4 +184,4 @@ autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
-shape = SubResource("CircleShape2D_bvcm0")
+shape = SubResource("CircleShape2D_g2els")
