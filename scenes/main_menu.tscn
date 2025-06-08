@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4hm3ieiklr4l"]
+[gd_scene load_steps=6 format=3 uid="uid://b4hm3ieiklr4l"]
 
 [ext_resource type="Script" uid="uid://gb6aedr4ymhe" path="res://scenes/main_menu.gd" id="1_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://d0q2g65ahgok" path="res://assets/sprites/world_tileset.png" id="1_l6cm7"]
 [ext_resource type="PackedScene" uid="uid://d2w2i5h0lhc6l" path="res://scenes/slime.tscn" id="3_bqqt6"]
-[ext_resource type="PackedScene" uid="uid://dvuy0lkisr4vi" path="res://scenes/monster.tscn" id="4_wu84c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ekxnf"]
 texture = ExtResource("1_l6cm7")
@@ -223,8 +222,18 @@ text = "Exit"
 [node name="Slime" parent="." instance=ExtResource("3_bqqt6")]
 position = Vector2(184, 301)
 
-[node name="Slime2" parent="." instance=ExtResource("4_wu84c")]
+[node name="Slime2" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 position = Vector2(345, 289)
+script = null
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

@@ -12,16 +12,13 @@ config_version=5
 
 config/name="First Game"
 config/version="1.0.1"
-run/main_scene="uid://b4hm3ieiklr4l"
+run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.png"
-<<<<<<< HEAD
 
 [autoload]
 
 Data="*res://scripts/data.gd"
-=======
->>>>>>> 3e238842044903ddcc1181358e59b5bc3e9fb226
 
 [display]
 

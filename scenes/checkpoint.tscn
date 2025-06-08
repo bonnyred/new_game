@@ -21,7 +21,7 @@ script = ExtResource("1_yyywg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2251.5, -38)
-scale = Vector2(0.3, 0.499895)
+scale = Vector2(0.2, 0.4)
 shape = SubResource("RectangleShape2D_dinhu")
 
 [node name="Label" type="Label" parent="CollisionShape2D"]

@@ -3,10 +3,7 @@ extends Area2D
 @onready var timer = $Timer
 @onready var red_tint = get_node("/root/Game/CanvasLayer/RedTint")
 @onready var death_label = get_node("/root/Game/CanvasLayer/DeathLabel")
-<<<<<<< HEAD
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
-=======
->>>>>>> 3e238842044903ddcc1181358e59b5bc3e9fb226
 
 func _on_body_entered(body):
 	print("Red tint is:", red_tint)
@@ -18,20 +15,13 @@ func _on_body_entered(body):
 	red_tint.modulate.a = 0.0
 	death_label.visible = true
 	death_label.modulate.a = 0.0
-<<<<<<< HEAD
 	audio_stream_player_2d.play()
-=======
->>>>>>> 3e238842044903ddcc1181358e59b5bc3e9fb226
 
 	body.get_node("CollisionShape2D").queue_free()
 	
 	var tween = create_tween()
 	tween.tween_property(red_tint, "modulate:a", 0.5, 0.1)
 	tween.parallel().tween_property(death_label, "modulate:a", 1.0, 0.5) 
-<<<<<<< HEAD
-=======
-	
->>>>>>> 3e238842044903ddcc1181358e59b5bc3e9fb226
 	tween.tween_callback(Callable(timer, "start"))
 
 
