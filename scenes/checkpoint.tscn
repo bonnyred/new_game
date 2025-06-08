@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://bknk8icomtsmq"]
+
+[ext_resource type="Script" uid="uid://d3duth6era81w" path="res://scenes/checkpoint.gd" id="1_yyywg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dinhu"]
+size = Vector2(15, 14)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yyywg"]
+lifetime_randomness = 0.64
+particle_flag_disable_z = true
+inherit_velocity_ratio = 0.361
+initial_velocity_min = 149.43
+initial_velocity_max = 149.43
+gravity = Vector3(0, 98, 0)
+scale_min = 127.44
+scale_max = 127.44
+
+[node name="Area2D" type="Area2D"]
+position = Vector2(-9, -9)
+script = ExtResource("1_yyywg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2251.5, -38)
+scale = Vector2(0.3, 0.499895)
+shape = SubResource("RectangleShape2D_dinhu")
+
+[node name="Label" type="Label" parent="CollisionShape2D"]
+offset_left = -45.0
+offset_top = -36.0075
+offset_right = 47.0
+offset_bottom = -13.0075
+text = "checkpoint"
+
+[node name="Particles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 30
+one_shot = true
+speed_scale = 3.0
+process_material = SubResource("ParticleProcessMaterial_yyywg")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

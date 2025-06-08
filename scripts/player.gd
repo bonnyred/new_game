@@ -3,10 +3,12 @@ extends CharacterBody2D
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+@onready var game_manager: Node = %GameManager
 
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var label = $CanvasLayer/Label
+@onready var label2 = $CanvasLayer/Label2
 @onready var camera = $Camera2D
 
 
@@ -21,17 +23,23 @@ const TAP_MAX_DURATION := 0.2  # seconds
 const TAP_MAX_DISTANCE := 30.0
 
 func _ready():
-	label.position = Vector2(15, 15)  # Directly position it on screen
+	var check = game_manager.get_check()
+	if check != null:
+		self.global_position = check
+	
+	label.position = Vector2(15, 15)
 	label.text = "Coins: 0"
-	label.visible = true  # Force it visible
+	label.visible = true  
+	
+	label2.position = Vector2(15, 50)
+	label2.text = "Deaths: " + str(Data.deaths)
+	label2.visible = true
 
 	# Camera setup
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	camera.make_current()
 	camera.zoom = Vector2(3, 3)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	print(get_tree().get_root().get_node("Game"))
-	print(get_node("/root/Game/Player/Camera2D"))
 	get_node("/root/Game/Player/Camera2D").make_current()
 	get_node("/root/Game/Player/Camera2D").zoom = Vector2(3, 3)
 
